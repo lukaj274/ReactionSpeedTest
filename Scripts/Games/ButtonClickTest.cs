@@ -57,6 +57,7 @@ public partial class ButtonClickTest : Button
 	{
 		Hide();
 		_isPlaying = true;
+		ResetTimer();
 		_state = State.CountingDown;
 		
 		await ToSignal(GetTree().CreateTimer(seconds), Timer.SignalName.Timeout);
@@ -76,7 +77,14 @@ public partial class ButtonClickTest : Button
 				StartGame();
 				break;
 			}
-			case State.CountingDown: break;
+			
+			case State.CountingDown:
+			{
+				// Reset the timer display
+				ResetTimer();
+				break;
+			}
+			
 			case State.CountingUp:
 			{
 				// Stop the game
@@ -110,6 +118,11 @@ public partial class ButtonClickTest : Button
 		int minutes = (int)(_elapsedTime / 60);
 		int seconds = (int)(_elapsedTime % 60);
 		TimeLabel.Text = $"{minutes:D2}:{seconds:D2}";
+	}
+
+	private void ResetTimer()
+	{
+		_elapsedTime = 0;
 	}
 }
 
